@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy Image') {
             steps{
                 script {
-                    docker.withRegistry( '', cr_docker_hub ) {
+                    docker.withRegistry( '', 'cr_docker_hub' ) {
                         dockerImage.push()
                     }
                 }
