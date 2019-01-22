@@ -1,11 +1,30 @@
 pipeline {
     agent any
+    environment {
+        registry = 'dh_registry'
+        registryCredential = 'cr_docker_hub'
+        dockerImage = ''
+    }
     stages {
-        stage('Build') {
+        stage('Cloning Git') {
             steps {
-                echo 'Running build automation'
-                sh './gradlew build --no-daemon'
-                archiveArtifacts artifacts: 'dist/trainSchedule.zip'
+                git 'https://github.com/jagsdevops/cicd-pipeline-train-schedule-dockerdeploy.git'
+            }
+        }
+        stage('Building image') {
+            steps{
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+        stage('Deploy Image') {
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
             }
         }
     }
