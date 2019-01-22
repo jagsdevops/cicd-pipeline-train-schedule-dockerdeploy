@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        registry = $dh_registry
-        registryCredential = $cr_docker_hub
+        registry = "$dh_registry"
+        registryCredential = "$cr_docker_hub"
         dockerImage = ''
     }
     stages {
