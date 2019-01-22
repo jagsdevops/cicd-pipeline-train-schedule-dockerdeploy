@@ -13,6 +13,7 @@ pipeline {
         }
         stage('Building image') {
             steps{
+                sh 'printenv'
                 script {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
